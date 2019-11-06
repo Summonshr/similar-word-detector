@@ -5,34 +5,31 @@ const humanizeDuration = require('humanize-duration')
 var uniq = require('lodash/uniq');
 var mean = require('lodash/mean');
 
-const names = [
+const words = [
     'yuvraj timsina',
     'yuvraj timalsina',
     'yuvraj timsena',
     'yubraj timsena',
 ]
 
-fs.readFile('list.txt', 'utf8', function(err, contents) {
+let results  = [];
+let fromto = process.argv.pop()
+let from = fromto.split('-')[0]
+let to = fromto.split('-')[1]
+let total = to - from;
+let averages = [];
 
-    let results  = [];
+fs.readFile('list.txt', 'utf8', function(err, file_contents) {
 
-    const dbnames = uniq(contents.split('||'));
+    const list = uniq(file_contents.split('||'));
 
-    let fromto = process.argv.pop()
-    let from = fromto.split('-')[0]
-    let to = fromto.split('-')[1]
-
-    let total = to - from;
-
-    let averages = [];
-
-    uniq(names).splice(from,to).map((name, i)=>{
+    uniq(words).splice(from,to).map((name, i)=>{
 
         let start = new Date();
 
         i = i + 1
 
-        let ress = dbnames.map((e)=>{
+        let similar_words = list.map((e)=>{
 
             let percentage = fuzz.ratio(e, name)
 
@@ -44,8 +41,8 @@ fs.readFile('list.txt', 'utf8', function(err, contents) {
 
         }).filter(Boolean)
 
-        if(ress.length > 0) {
-            results = results.concat(ress)
+        if(similar_words.length > 0) {
+            results = results.concat(similar_words)
         }
 
         if(results) {
