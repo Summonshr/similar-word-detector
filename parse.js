@@ -5,81 +5,78 @@ const humanizeDuration = require('humanize-duration')
 var uniq = require('lodash/uniq');
 var mean = require('lodash/mean');
 
-setTimeout(()=>{
-    const names = [
-        'yuvraj timsina',
-        'yuvraj timalsina',
-        'yuvraj timsena',
-        'yubraj timsena',
-    ]
+const names = [
+    'yuvraj timsina',
+    'yuvraj timalsina',
+    'yuvraj timsena',
+    'yubraj timsena',
+]
 
-    fs.readFile('list.txt', 'utf8', function(err, contents) {
+fs.readFile('list.txt', 'utf8', function(err, contents) {
 
-        let results  = [];
+    let results  = [];
 
-        const dbnames = uniq(contents.split('||'));
+    const dbnames = uniq(contents.split('||'));
 
-        let fromto = process.argv.pop()
-        let from = fromto.split('-')[0]
-        let to = fromto.split('-')[1]
+    let fromto = process.argv.pop()
+    let from = fromto.split('-')[0]
+    let to = fromto.split('-')[1]
 
-        let total = to - from;
+    let total = to - from;
 
-        let averages = [];
+    let averages = [];
 
-        uniq(names).splice(from,to).map((name, i)=>{
+    uniq(names).splice(from,to).map((name, i)=>{
 
-            let start = new Date();
+        let start = new Date();
 
-            i = i + 1
+        i = i + 1
 
-        	let ress = dbnames.map((e)=>{
+        let ress = dbnames.map((e)=>{
 
-                let percentage = fuzz.ratio(e, name)
+            let percentage = fuzz.ratio(e, name)
 
-        		if(percentage > 94) {
-        			return { name, similar_name: e, percentage }
-                }
-
-                return null;
-
-            }).filter(Boolean)
-
-        	if(ress.length > 0) {
-        		results = results.concat(ress)
+            if(percentage > 94) {
+                return { name, similar_name: e, percentage }
             }
 
-            if(results) {
+            return null;
 
-                let xls = json2xls(results)
+        }).filter(Boolean)
 
-                fs.writeFileSync(fromto+'.xlsx', xls, 'binary', function (err) {
-                        console.log(err)
-                });
+        if(ress.length > 0) {
+            results = results.concat(ress)
+        }
 
-                let end = new Date()
+        if(results) {
 
-                let estimate = Math.round(end-start) * (total - i - 1);
+            let xls = json2xls(results)
 
-                averages.push(estimate)
+            fs.writeFileSync(fromto+'.xlsx', xls, 'binary', function (err) {
+                    console.log(err)
+            });
 
-                let remaining_time = humanizeDuration(mean(averages), {round:true})
+            let end = new Date()
 
-                process.stdout.write('\033c');
+            let estimate = Math.round(end-start) * (total - i - 1);
 
-                console.log('Finished Processing ' + i +' items')
+            averages.push(estimate)
 
-                console.log('Remaining Time: ' + remaining_time)
+            let remaining_time = humanizeDuration(mean(averages), {round:true})
 
-            }
+            process.stdout.write('\033c');
 
-            if(total == i) {
-                process.stdout.write('\033c');
-                console.log('Finished')
-            }
+            console.log('Finished Processing ' + i +' items')
 
-        });
+            console.log('Remaining Time: ' + remaining_time)
+
+        }
+
+        if(total == i) {
+            process.stdout.write('\033c');
+            console.log('Finished')
+        }
 
     });
 
-}, 1000);
+});
