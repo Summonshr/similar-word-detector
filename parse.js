@@ -13,8 +13,6 @@ setTimeout(()=>{
         'yubraj timsena',
     ]
 
-    var intervalTracker = false;
-
     fs.readFile('array.txt', 'utf8', function(err, contents) {
 
         let results  = [];
@@ -66,11 +64,6 @@ setTimeout(()=>{
                 averages.push(estimate)
 
                 let remaining_time = humanizeDuration(mean(averages), {round:true})
-
-
-                if(intervalTracker) {
-                    clearInterval(intervalTracker)
-                }
 
                 process.stdout.write('\033c');
 
