@@ -3,7 +3,7 @@ Detect similar words present in the source using fuzzball with detailed console 
 
 ## Syntax
 
-> node parse.js <from>-<to>
+> node parse.js \<from>-\<to>
 
 **Example**
 
