@@ -13,7 +13,7 @@ setTimeout(()=>{
         'yubraj timsena',
     ]
 
-    fs.readFile('array.txt', 'utf8', function(err, contents) {
+    fs.readFile('list.txt', 'utf8', function(err, contents) {
 
         let results  = [];
 
