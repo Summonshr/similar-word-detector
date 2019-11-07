@@ -1,3 +1,4 @@
 *.xls*
 node_modules
 *.lock
+list.txt
