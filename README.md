@@ -9,6 +9,10 @@ Start with
 or 
     
     yarn
+
+Add list.txt file with words to search for that are separated with a pipe operator.
+
+    wordA|wordB|wordC......................
     
 ## Syntax
 
